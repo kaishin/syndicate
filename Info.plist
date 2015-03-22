@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Reda Lemeden</string>
+	<key>Builder Version</key>
+	<string>10600.4.10.7</string>
+	<key>CFBundleDisplayName</key>
+	<string>Syndicate</string>
+	<key>CFBundleIdentifier</key>
+	<string>co.kaishin.syndicate</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>Chrome</key>
+	<dict/>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict/>
+	</dict>
+	<key>Description</key>
+	<string>Displays RSS/Atom feeds available on the current Web page.</string>
+	<key>DeveloperIdentifier</key>
+	<string>U8WP333PAE</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://redalemeden.com/syndicate/update.plist</string>
+	<key>Website</key>
+	<string>http://redalemeden.com/syndicate</string>
+</dict>
+</plist>
