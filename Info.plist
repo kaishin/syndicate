@@ -17,11 +17,47 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>Chrome</key>
-	<dict/>
+	<dict>
+		<key>Global Page</key>
+		<string>global.html</string>
+		<key>Popovers</key>
+		<array>
+			<dict>
+				<key>Filename</key>
+				<string>popover.html</string>
+				<key>Height</key>
+				<string></string>
+				<key>Identifier</key>
+				<string>mainPopover</string>
+				<key>Width</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Identifier</key>
+				<string>menuButton</string>
+				<key>Image</key>
+				<string>assets/icon.png</string>
+				<key>Label</key>
+				<string>Subscribe</string>
+				<key>Popover</key>
+				<string>mainPopover</string>
+				<key>Tool Tip</key>
+				<string>Subscribe via RSS</string>
+			</dict>
+		</array>
+	</dict>
 	<key>Content</key>
 	<dict>
 		<key>Scripts</key>
-		<dict/>
+		<dict>
+			<key>End</key>
+			<array>
+				<string>endScript.js</string>
+			</array>
+		</dict>
 	</dict>
 	<key>Description</key>
 	<string>Displays RSS/Atom feeds available on the current Web page.</string>
