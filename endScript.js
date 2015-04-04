@@ -92,8 +92,9 @@ function getBaseURL() {
 
 function fullURL(url) {
   var trimmedURL = url.trim();
+  var protocol = trimmedURL.substr(0,4);
 
-  if (trimmedURL.substr(0,4) !== "http") {
+  if (protocol !== "http" && protocol !== "feed") {
     if (trimmedURL[0] == "/") {
       trimmedURL = trimmedURL.slice(1);
     }
