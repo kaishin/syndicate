@@ -12,13 +12,12 @@ function extractPageFeeds() {
 
       if (type !== null) {
         var typeValue = type.value;
+
         if (typeValue === "application/rss+xml" || typeValue === "application/atom+xml" || typeValue === "text/xml") {
-          var title = link.attributes.getNamedItem("title");
-          title = title !== null ? title.value : "Feed";
           var href = link.attributes.getNamedItem("href").value;
 
           if (href) {
-            feeds["list"].push({url: fullURL(href), title: titleFromURL(href), type: typeFromString(typeValue)});
+            feeds["list"].push({url: fullURL(href), title: titleFromType(typeValue), type: typeFromString(typeValue)});
           }
         }
       }
@@ -42,18 +41,13 @@ function typeFromString(string) {
   }
 }
 
-function titleFromURL(url) {
-  var lastCharacter = url.slice(-1);
-  if (lastCharacter === "/") {
-    url = url.slice(0, - 1);
-  }
-
-  var title = toTitleCase(unescape(url.substring(url.lastIndexOf("/")+1).split(".")[0].replace(/[_-]+/g, " ")));
-
-  if (title != "") {
-    return title.replace("Rss", "RSS");
-  } else {
+function titleFromType(type) {
+  if (type.indexOf("rss") != -1) {
     return "RSS Feed";
+  } else if (type.indexOf("atom") != -1) {
+    return "Atom Feed";
+  } else {
+    return "Feed";
   }
 }
 

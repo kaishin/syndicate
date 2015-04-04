@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
       safari.application.addEventListener("message", messageHandler, false);
       safari.application.addEventListener("validate", validateHandler, false);
       safari.application.addEventListener("navigate", navigateHandler, true);
 
       var globalFeeds = {};
+      var feedTitles = {};
       var currentTabUrl;
+      google.load("feeds", "1");
 
       function messageHandler(event) {
         if (event.name === "extractedFeeds") {
           var feeds = event.message;
-
-          if (event.target.url) {
-            globalFeeds[feeds["site"]] = feeds["list"];
-          }
+          globalFeeds[feeds["site"]] = feeds["list"];
+          fetchTitlesForFeeds(feeds["list"]);
         }
       }
 
@@ -72,17 +73,47 @@
       }
 
       function currentTabFeeds() {
-        return globalFeeds[currentTabUrl];
+        var feeds = globalFeeds[currentTabUrl];
+        var titledFeeds = [];
+
+        for (var i = 0; i < feeds.length; i++) {
+          var feed = feeds[i];
+          var fetchedTitle = feedTitles[feed["url"]];
+
+          if (fetchedTitle !== undefined) {
+            feed["title"] = fetchedTitle;
+          }
+
+          titledFeeds.push(feed)
+        };
+
+        return titledFeeds;
       }
 
       function purge() {
         setTimeout(function() {
           for (var url in globalFeeds) {
-            if (isOpenInBrowser(url) == false) {
+            if (isOpenInBrowser(url) === false) {
               delete globalFeeds[url];
             }
           }
         }, 500);
+      }
+
+      function fetchTitlesForFeeds(feeds) {
+        for (var i = 0; i < feeds.length; i++) {
+          var feed = feeds[i];
+          if (feedTitles[feed["url"]]) return;
+
+          var googleFeed = new google.feeds.Feed(feed["url"]);
+          googleFeed.setNumEntries(2);
+
+          googleFeed.load(function(result) {
+            if (!result.error) {
+              feedTitles[result.feed.feedUrl] = result.feed.title;
+            }
+          });
+        }
       }
     </script>
   </head>
