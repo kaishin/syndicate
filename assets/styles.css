@@ -1,5 +1,10 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Helvetica Neue";
+  overflow: hidden;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -16,7 +21,7 @@ ul {
 }
 
 .feed-cell {
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   display: table;
   list-style: none;
   padding: 10px 0;
@@ -24,12 +29,12 @@ ul {
 }
 
 .feed-cell:first-of-type {
-  padding-top: 0;
+  padding-top: 2px;
 }
 
 .feed-cell:last-of-type {
   border-bottom: none;
-  padding: 0;
+  padding-bottom: 5px;
 }
 
 .controls,
@@ -39,21 +44,27 @@ ul {
 }
 
 .feed-name {
-  display: block;
-  font-weight: 200;
-  font-size: 14px;
-  letter-spacing: 0.05em;
   -webkit-user-select: none;
+  display: block;
+  font-size: 14px;
+  font-weight: 200;
+  letter-spacing: 0.05em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 220px;
 }
 
 .url-field {
+  -webkit-mask-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 1)), color-stop(0.9, rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
   background: transparent;
   border: none;
-  color: #444;
+  color: #000;
   display: block;
-  margin: 0;
+  margin: 2px 0 0;
+  opacity: 0.7;
   padding: 0;
-  width: 100%;
+  width: 220px;
 }
 
 form {

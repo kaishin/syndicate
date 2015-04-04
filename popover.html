@@ -7,7 +7,6 @@
 
       function popoverHandler(event) {
         if (event.target.identifier !== "mainPopover") return;
-        console.log(document.domain);
         var feeds = safari.extension.globalPage.contentWindow.currentTabFeeds();
         updatePopover(feeds);
       }
@@ -17,7 +16,7 @@
         list.innerHTML = "";
 
         var popover = safari.extension.popovers[0];
-        popover.height = 56 * feeds.length;
+        popover.height = 55 * feeds.length;
         popover.width = 300;
 
         for (var i = 0; i < feeds.length; i++) {
