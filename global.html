@@ -2,11 +2,93 @@
 <html>
   <head>
     <script type="text/javascript">
-      var menuItem = safari.extension.toolbarItems[0];
-      var popover = safari.extension.popovers[0];
-      popover.width = 300;
-      popover.height = 100;
-      // menuItem.badge = 2;
+      safari.application.addEventListener("message", messageHandler, false);
+      safari.application.addEventListener("validate", validateHandler, false);
+      safari.application.addEventListener("navigate", navigateHandler, true);
+
+      var globalFeeds = {};
+      var currentTabUrl;
+
+      function messageHandler(event) {
+        if (event.name === "extractedFeeds") {
+          var feeds = event.message;
+          // console.log("----> MessageHandler: " + event.name + " with target URL " + feeds["site"] + " with feed url: " + feeds["list"][0]["url"]);
+
+          if (event.target.url) {
+            globalFeeds[feeds["site"]] = feeds["list"];
+          }
+        }
+      }
+
+      function updateItem(url) {
+        var menuItem = safari.extension.toolbarItems[0];
+        currentTabUrl = url;
+        // console.log("updateItem("+ url +") called from " + arguments.callee.caller.name);
+
+        if (url in globalFeeds) {
+          var feedCount = globalFeeds[url].length;
+
+          if (feedCount > 0) {
+           menuItem.disabled = false;
+
+            // if (safari.extension.settings.show_badge == true) {
+              menuItem.badge = feedCount;
+            // }
+          } else {
+            menuItem.disabled = true;
+            menuItem.badge = 0;
+          }
+        } else {
+          menuItem.disabled = true;
+          menuItem.badge = 0;
+        }
+      }
+
+      function navigateHandler(event) {
+        var url = event.target.url;
+
+        if (event.type === "navigate") {
+          updateItem(url);
+        }
+      }
+
+      function validateHandler(event) {
+        if (event.target.identifier == "menuButton") {
+          var menuItem = event.target;
+          var url = event.target.browserWindow.activeTab.url;
+          updateItem(url);
+          purge();
+        }
+      }
+
+      function isOpenInBrowser(url) {
+        var windows = safari.application.browserWindows;
+
+        for (var i = 0; i < windows.length; i++) {
+          var tabs = windows[i].tabs;
+          for (i = 0; i < tabs.length; i++) {
+            if (tabs[i].url === url) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      }
+
+      function currentTabFeeds() {
+        return globalFeeds[currentTabUrl];
+      }
+
+      function purge() {
+        setTimeout(function() {
+          for (var url in globalFeeds) {
+            if (isOpenInBrowser(url) == false) {
+              delete globalFeeds[url];
+            }
+          }
+        }, 500);
+      }
     </script>
   </head>
   <body></body>

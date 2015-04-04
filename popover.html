@@ -1,7 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
+  <head>
+    <meta charset="utf-8">
+    <script type="text/javascript">
+      safari.application.addEventListener("popover", popoverHandler, false);
+
+      function popoverHandler(event) {
+        if (event.target.identifier !== "mainPopover") return;
+        console.log(document.domain);
+        var feeds = safari.extension.globalPage.contentWindow.currentTabFeeds();
+        updatePopover(feeds);
+      }
+
+      function updatePopover(feeds) {
+        var list = document.getElementById("feed-list");
+        list.innerHTML = "";
+
+        var popover = safari.extension.popovers[0];
+        popover.height = 56 * feeds.length;
+        popover.width = 300;
+
+        for (var i=0; i < feeds.length; i++) {
+          var feed = feeds[i];
+          list.innerHTML = list.innerHTML + constructCell(feed);
+        }
+      }
+
+      function constructCell(feed) {
+        return "<li class=\"feed-cell\"><div class=\"feed-info\"><span class=\"feed-name\">" + feed["title"] + "</span><input class=\"url-field\" disabled=\"disabled\" alt=\"Click to select all\" type=\"text\" value=\"" + feed["url"] + "\"></div><div class=\"controls\"><form action=\"" + feed["url"] + "\"><input type=\"submit\" value=\"&#65291;\"></form></div></li>"
+      }
+    </script>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
   <body>
-    <button>Subscribe</button>
+    <ul id="feed-list">
+    </ul>
   </body>
 </html>

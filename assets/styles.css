@@ -1,0 +1,71 @@
+body {
+  font-family: "Helvetica Neue";
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+
+.feed-cell {
+  display: table;
+  width: 100%;
+}
+
+.feed-cell {
+  border-bottom: 1px solid #DDD;
+  display: table;
+  list-style: none;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.feed-cell:first-of-type {
+  padding-top: 0;
+}
+
+.feed-cell:last-of-type {
+  border-bottom: none;
+  padding: 0;
+}
+
+.controls,
+.feed-info {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.feed-name {
+  display: block;
+  font-weight: 200;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  -webkit-user-select: none;
+}
+
+.url-field {
+  background: transparent;
+  border: none;
+  color: #444;
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+form {
+  float: right;
+}
+
+[type=submit] {
+  font-size: 18px;
+  color: #AAA;
+}
+
+[type=submit]:active {
+  font-size: 18px;
+  color: white;
+}

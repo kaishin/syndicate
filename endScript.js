@@ -1,8 +1,10 @@
 function extractPageFeeds() {
-  var feeds = [];
+  var feeds = {};
+  feeds["site"] = getBaseURL();
+  feeds["list"] = [];
   var headLinks = document.getElementsByTagName("head")[0].getElementsByTagName("link");
 
-  for (var i=0; i < headLinks.length; i++) {
+  for (var i = 0; i < headLinks.length; i++) {
     var link = headLinks[i];
 
     if (link.attributes.getNamedItem("rel") !== null && link.attributes.getNamedItem("rel").value == "alternate") {
@@ -16,14 +18,14 @@ function extractPageFeeds() {
           var href = link.attributes.getNamedItem("href").value;
 
           if (href) {
-            feeds.push({url: fullURL(href), title: titleFromURL(href), type: typeFromString(typeValue)});
+            feeds["list"].push({url: fullURL(href), title: titleFromURL(href), type: typeFromString(typeValue)});
           }
         }
       }
     }
   }
 
-  return feeds;
+  safari.self.tab.dispatchMessage("extractedFeeds", feeds);
 }
 
 function protocol(url) {
@@ -41,7 +43,18 @@ function typeFromString(string) {
 }
 
 function titleFromURL(url) {
-  return toTitleCase(unescape(url.substring(url.lastIndexOf("/")+1).split(".")[0].replace(/[_-]+/g, " ")));
+  var lastCharacter = url.slice(-1);
+  if (lastCharacter === "/") {
+    url = url.slice(0, - 1);
+  }
+
+  var title = toTitleCase(unescape(url.substring(url.lastIndexOf("/")+1).split(".")[0].replace(/[_-]+/g, " ")));
+
+  if (title != "") {
+    return title.replace("Rss", "RSS");
+  } else {
+    return "RSS Feed";
+  }
 }
 
 function toTitleCase(str) {
@@ -51,34 +64,30 @@ function toTitleCase(str) {
 }
 
 function getBaseURL() {
-    var head = document.getElementsByTagName("head")[0];
-    var baseLinks = head.getElementsByTagName("base");
-    var baseURL;
+  var head = document.getElementsByTagName("head")[0];
+  var baseLinks = head.getElementsByTagName("base");
+  var baseURL;
 
-    for (var i=0; i < baseLinks.length; i++) {
-      var link = baseLinks[i];
+  for (var i=0; i < baseLinks.length; i++) {
+    var link = baseLinks[i];
 
-      if (link.attributes.getNamedItem("href") !== null) {
-        url = link.attributes.getNamedItem("href").value;
+    if (link.attributes.getNamedItem("href") !== null) {
+      url = link.attributes.getNamedItem("href").value;
 
-        if (url.charAt(url.length-1)!="/") {
-          url+="/";
-        }
-
-        baseURL = url;
-        break;
+      if (url.charAt(url.length - 1) != "/") {
+        url += "/";
       }
+
+      baseURL = url;
+      break;
     }
+  }
 
-    if (baseURL === undefined) {
-      baseURL = protocol(document.URL) + "://" + document.domain + "/"
-    }
+  if (baseURL === undefined) {
+    baseURL = protocol(document.URL) + "://" + document.domain + "/"
+  }
 
-    return baseURL;
-}
-
-function openFeedInBrowser(url) {
-  safari.self.tab.dispatchMessage("openLocal", url);
+  return baseURL;
 }
 
 function fullURL(url) {
@@ -93,4 +102,17 @@ function fullURL(url) {
   }
 
   return trimmedURL;
+}
+
+function populatePopover() {
+  var popover = safari.extension.popovers[0];
+  popover.width = 300;
+
+  popover.height = 100;
+}
+
+if (window.top === window) {
+  if (document.domain !== "undefined") {
+    extractPageFeeds();
+  }
 }
