@@ -86,7 +86,8 @@
 
         for (var i = 0; i < feeds.length; i++) {
           var feed = feeds[i];
-          var fetchedTitle = feedTitles[feed["url"]];
+          var url = sanitizeFeedUrl(feed["url"]);
+          var fetchedTitle = feedTitles[url];
 
           if (fetchedTitle !== undefined) {
             feed["title"] = fetchedTitle;
@@ -111,9 +112,11 @@
       function fetchTitlesForFeeds(feeds) {
         for (var i = 0; i < feeds.length; i++) {
           var feed = feeds[i];
-          if (feedTitles[feed["url"]]) return;
+          var url = sanitizeFeedUrl(feed["url"]);
 
-          var googleFeed = new google.feeds.Feed(feed["url"]);
+          if (feedTitles[url]) return;
+
+          var googleFeed = new google.feeds.Feed(url);
           googleFeed.setNumEntries(2);
 
           googleFeed.load(function(result) {
@@ -142,6 +145,17 @@
             feedTitles = {};
           }
         }
+      }
+
+      function sanitizeFeedUrl(url) {
+        var sanitizedFeed = url;
+        var protocol = sanitizedFeed.substr(0,4);
+
+        if (protocol === "feed") {
+          sanitizedFeed = sanitizedFeed.replace("feed://", "http://");
+        }
+
+        return sanitizedFeed;
       }
     </script>
   </head>
