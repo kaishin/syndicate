@@ -6,6 +6,8 @@
       safari.application.addEventListener("message", messageHandler, false);
       safari.application.addEventListener("validate", validateHandler, false);
       safari.application.addEventListener("navigate", navigateHandler, true);
+      safari.extension.settings.addEventListener("change", settingsChangeHandler, false);
+
 
       var globalFeeds = {};
       var feedTitles = {};
@@ -16,7 +18,10 @@
         if (event.name === "extractedFeeds") {
           var feeds = event.message;
           globalFeeds[feeds["site"]] = feeds["list"];
-          fetchTitlesForFeeds(feeds["list"]);
+
+          if (safari.extension.settings.googleFeedEnabled === true) {
+            fetchTitlesForFeeds(feeds["list"]);
+          }
         }
       }
 
@@ -29,7 +34,10 @@
 
           if (feedCount > 0) {
             menuItem.disabled = false;
-            menuItem.badge = feedCount;
+
+            if (safari.extension.settings.showBadge === true) {
+              menuItem.badge = feedCount;
+            }
           } else {
             menuItem.disabled = true;
             menuItem.badge = 0;
@@ -113,6 +121,26 @@
               feedTitles[result.feed.feedUrl] = result.feed.title;
             }
           });
+        }
+      }
+
+      function settingsChangeHandler(event) {
+        if (event.key === "showBadge") {
+          var menuItem = safari.extension.toolbarItems[0];
+
+          if (safari.extension.settings.showBadge === true) {
+            var feedCount = globalFeeds[currentTabUrl].length;
+
+            if (feedCount !== undefined) {
+              menuItem.badge = feedCount;
+            }
+          } else {
+            menuItem.badge = 0;
+          }
+        } else if (event.key === "googleFeedEnabled") {
+          if (safari.extension.settings.googleFeedEnabled === false) {
+            feedTitles = {};
+          }
         }
       }
     </script>
