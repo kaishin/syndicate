@@ -1,6 +1,7 @@
 function extractPageFeeds() {
   var feeds = {};
   feeds["site"] = window.location.href;
+  if (feeds["site"] === "favorites://") { return };
   feeds["list"] = [];
   var headLinks = document.getElementsByTagName("head")[0].getElementsByTagName("link");
 
