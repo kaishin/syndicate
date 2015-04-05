@@ -1,7 +1,9 @@
 function extractPageFeeds() {
   var feeds = {};
+
   feeds["site"] = window.location.href;
   if (feeds["site"] === "favorites://") { return };
+
   feeds["list"] = [];
   var headLinks = document.getElementsByTagName("head")[0].getElementsByTagName("link");
 
@@ -18,7 +20,7 @@ function extractPageFeeds() {
           var href = link.attributes.getNamedItem("href").value;
 
           if (href) {
-            feeds["list"].push({url: fullURL(href), title: titleFromType(typeValue), type: typeFromString(typeValue)});
+            feeds["list"].push({url: _fullUrl(href), title: titleFromType(typeValue), type: typeFromString(typeValue)});
           }
         }
       }
@@ -58,10 +60,10 @@ function toTitleCase(str) {
   });
 }
 
-function getBaseURL() {
+function _getBaseUrl() {
   var head = document.getElementsByTagName("head")[0];
   var baseLinks = head.getElementsByTagName("base");
-  var baseURL;
+  var baseUrl;
 
   for (var i=0; i < baseLinks.length; i++) {
     var link = baseLinks[i];
@@ -73,38 +75,31 @@ function getBaseURL() {
         url += "/";
       }
 
-      baseURL = url;
+      baseUrl = url;
       break;
     }
   }
 
-  if (baseURL === undefined) {
-    baseURL = protocol(document.URL) + "://" + document.domain + "/"
+  if (baseUrl === undefined) {
+    baseUrl = protocol(document.URL) + "://" + document.domain + "/"
   }
 
-  return baseURL;
+  return baseUrl;
 }
 
-function fullURL(url) {
-  var trimmedURL = url.trim();
-  var protocol = trimmedURL.substr(0,4);
+function _fullUrl(url) {
+  var trimmedUrl = url.trim();
+  var protocol = trimmedUrl.substr(0,4);
 
   if (protocol !== "http" && protocol !== "feed") {
-    if (trimmedURL[0] == "/") {
-      trimmedURL = trimmedURL.slice(1);
+    if (trimmedUrl[0] == "/") {
+      trimmedUrl = trimmedUrl.slice(1);
     }
 
-    trimmedURL = getBaseURL() + trimmedURL;
+    trimmedUrl = _getBaseUrl() + trimmedUrl;
   }
 
-  return trimmedURL;
-}
-
-function populatePopover() {
-  var popover = safari.extension.popovers[0];
-  popover.width = 300;
-
-  popover.height = 100;
+  return trimmedUrl;
 }
 
 if (window.top === window) {

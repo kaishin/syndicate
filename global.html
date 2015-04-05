@@ -19,12 +19,47 @@
           globalFeeds[feeds["site"]] = feeds["list"];
 
           if (_googleFeedEnabled() && !_privateBrowsingOn()) {
-            fetchTitlesForFeeds(feeds["list"]);
+            _fetchTitlesForFeeds(feeds["list"]);
           }
         }
       }
 
-      function updateItem(url) {
+      function navigateHandler(event) {
+        var url = event.target.url;
+
+        if (event.type === "navigate") {
+          _updateItem(url);
+        }
+      }
+
+      function validateHandler(event) {
+        if (event.target.identifier == "menuButton") {
+          var menuItem = event.target;
+          var url = event.target.browserWindow.activeTab.url;
+          _updateItem(url);
+        }
+      }
+
+      function settingsChangeHandler(event) {
+        if (event.key === "showBadge") {
+          var menuItem = _activeMenuItem();
+          var feedCount = globalFeeds[currentTabUrl].length;
+
+          if (feedCount !== undefined) {
+            _updateMenuItemWithFeedCount(menuItem, feedCount);
+          } else {
+            _updateMenuItemWithFeedCount(menuItem, 0);
+          };
+        } else if (event.key === "googleFeedEnabled") {
+          if (!_googleFeedEnabled()) {
+            feedTitles = {};
+          }
+        }
+      }
+
+      // Menu Item Helpers
+
+      function _updateItem(url) {
         var menuItem = _activeMenuItem();
         currentTabUrl = url;
 
@@ -58,21 +93,7 @@
         }
       }
 
-      function navigateHandler(event) {
-        var url = event.target.url;
-
-        if (event.type === "navigate") {
-          updateItem(url);
-        }
-      }
-
-      function validateHandler(event) {
-        if (event.target.identifier == "menuButton") {
-          var menuItem = event.target;
-          var url = event.target.browserWindow.activeTab.url;
-          updateItem(url);
-        }
-      }
+      // Public Helpers
 
       function currentTabFeeds() {
         var feeds = globalFeeds[currentTabUrl];
@@ -80,7 +101,7 @@
 
         for (var i = 0; i < feeds.length; i++) {
           var feed = feeds[i];
-          var url = sanitizeFeedUrl(feed["url"]);
+          var url = _sanitizeFeedUrl(feed["url"]);
           var fetchedTitle = feedTitles[url];
 
           if (fetchedTitle !== undefined) {
@@ -93,10 +114,12 @@
         return titledFeeds;
       }
 
-      function fetchTitlesForFeeds(feeds) {
+      // Feed Helpers
+
+      function _fetchTitlesForFeeds(feeds) {
         for (var i = 0; i < feeds.length; i++) {
           var feed = feeds[i];
-          var url = sanitizeFeedUrl(feed["url"]);
+          var url = _sanitizeFeedUrl(feed["url"]);
 
           if (feedTitles[url]) return;
 
@@ -111,24 +134,7 @@
         }
       }
 
-      function settingsChangeHandler(event) {
-        if (event.key === "showBadge") {
-          var menuItem = _activeMenuItem();
-          var feedCount = globalFeeds[currentTabUrl].length;
-
-          if (feedCount !== undefined) {
-            _updateMenuItemWithFeedCount(menuItem, feedCount);
-          } else {
-            _updateMenuItemWithFeedCount(menuItem, 0);
-          };
-        } else if (event.key === "googleFeedEnabled") {
-          if (!_googleFeedEnabled()) {
-            feedTitles = {};
-          }
-        }
-      }
-
-      function sanitizeFeedUrl(url) {
+      function _sanitizeFeedUrl(url) {
         var sanitizedFeed = url;
         var protocol = sanitizedFeed.substr(0,4);
 
