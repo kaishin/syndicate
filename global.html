@@ -19,7 +19,7 @@
           var feeds = event.message;
           globalFeeds[feeds["site"]] = feeds["list"];
 
-          if (safari.extension.settings.googleFeedEnabled === true) {
+          if (_googleFeedEnabled()) {
             fetchTitlesForFeeds(feeds["list"]);
           }
         }
@@ -51,7 +51,7 @@
         } else {
           menuItem.disabled = false;
 
-          if (safari.extension.settings.showBadge === true) {
+          if (_badgeEnabled()) {
             menuItem.badge = count;
           } else {
             menuItem.badge = 0;
@@ -113,7 +113,7 @@
       function purge() {
         setTimeout(function() {
           for (var url in globalFeeds) {
-            if (isOpenInBrowser(url) === false) {
+            if (!isOpenInBrowser(url)) {
               delete globalFeeds[url];
             }
           }
@@ -149,7 +149,7 @@
             _updateMenuItemWithFeedCount(0);
           };
         } else if (event.key === "googleFeedEnabled") {
-          if (safari.extension.settings.googleFeedEnabled === false) {
+          if (!_googleFeedEnabled()) {
             feedTitles = {};
           }
         }
@@ -164,6 +164,16 @@
         }
 
         return sanitizedFeed;
+      }
+
+      // Settings Getters
+
+      function _googleFeedEnabled() {
+        return safari.extension.settings.googleFeedEnabled;
+      }
+
+      function _badgeEnabled() {
+        return safari.extension.settings.showBadge;
       }
     </script>
   </head>
