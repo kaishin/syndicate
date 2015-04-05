@@ -1,6 +1,6 @@
 function extractPageFeeds() {
   var feeds = {};
-  feeds["site"] = getBaseURL();
+  feeds["site"] = window.location.href;
   feeds["list"] = [];
   var headLinks = document.getElementsByTagName("head")[0].getElementsByTagName("link");
 
