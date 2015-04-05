@@ -72,23 +72,7 @@
           var menuItem = event.target;
           var url = event.target.browserWindow.activeTab.url;
           updateItem(url);
-          purge();
         }
-      }
-
-      function isOpenInBrowser(url) {
-        var windows = safari.application.browserWindows;
-
-        for (var i = 0; i < windows.length; i++) {
-          var tabs = windows[i].tabs;
-          for (i = 0; i < tabs.length; i++) {
-            if (tabs[i].url === url) {
-              return true;
-            }
-          }
-        }
-
-        return false;
       }
 
       function currentTabFeeds() {
@@ -108,16 +92,6 @@
         };
 
         return titledFeeds;
-      }
-
-      function purge() {
-        setTimeout(function() {
-          for (var url in globalFeeds) {
-            if (!isOpenInBrowser(url)) {
-              delete globalFeeds[url];
-            }
-          }
-        }, 500);
       }
 
       function fetchTitlesForFeeds(feeds) {
