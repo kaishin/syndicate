@@ -26,24 +26,24 @@
       }
 
       function updateItem(url) {
-        var menuItem = safari.extension.toolbarItems[0];
+        var menuItem = _activeMenuItem();
         currentTabUrl = url;
 
         if (url in globalFeeds) {
           var feedCount = globalFeeds[url].length;
 
           if (feedCount > 0) {
-            _updateMenuItemWithFeedCount(feedCount);
+            _updateMenuItemWithFeedCount(menuItem, feedCount);
           } else {
-            _updateMenuItemWithFeedCount(0);
+            _updateMenuItemWithFeedCount(menuItem, 0);
           }
         } else {
-            _updateMenuItemWithFeedCount(0);
+            _updateMenuItemWithFeedCount(menuItem, 0);
         }
       }
 
-      function _updateMenuItemWithFeedCount(count) {
-        var menuItem = safari.extension.toolbarItems[0];
+      function _updateMenuItemWithFeedCount(menuItem, count) {
+        if (menuItem === null) { return };
 
         if (count === 0) {
           menuItem.disabled = true;
@@ -114,13 +114,13 @@
 
       function settingsChangeHandler(event) {
         if (event.key === "showBadge") {
-          var menuItem = safari.extension.toolbarItems[0];
+          var menuItem = _activeMenuItem();
           var feedCount = globalFeeds[currentTabUrl].length;
 
           if (feedCount !== undefined) {
-            _updateMenuItemWithFeedCount(feedCount);
+            _updateMenuItemWithFeedCount(menuItem, feedCount);
           } else {
-            _updateMenuItemWithFeedCount(0);
+            _updateMenuItemWithFeedCount(menuItem, 0);
           };
         } else if (event.key === "googleFeedEnabled") {
           if (!_googleFeedEnabled()) {
@@ -148,6 +148,23 @@
 
       function _badgeEnabled() {
         return safari.extension.settings.showBadge;
+      }
+
+      // Extension Helpers
+
+      function _activeMenuItem() {
+        const toolbarItems = safari.extension.toolbarItems;
+        const activeBrowserWindow = safari.application.activeBrowserWindow;
+
+        for (var i = 0; i < toolbarItems.length; ++i) {
+          var item = toolbarItems[i];
+
+          if (item.identifier == "menuButton" && item.browserWindow == activeBrowserWindow) {
+            return item;
+          }
+        }
+
+        return null;
       }
     </script>
   </head>
