@@ -33,18 +33,29 @@
           var feedCount = globalFeeds[url].length;
 
           if (feedCount > 0) {
-            menuItem.disabled = false;
-
-            if (safari.extension.settings.showBadge === true) {
-              menuItem.badge = feedCount;
-            }
+            _updateMenuItemWithFeedCount(feedCount);
           } else {
-            menuItem.disabled = true;
-            menuItem.badge = 0;
+            _updateMenuItemWithFeedCount(0);
           }
         } else {
+            _updateMenuItemWithFeedCount(0);
+        }
+      }
+
+      function _updateMenuItemWithFeedCount(count) {
+        var menuItem = safari.extension.toolbarItems[0];
+
+        if (count === 0) {
           menuItem.disabled = true;
           menuItem.badge = 0;
+        } else {
+          menuItem.disabled = false;
+
+          if (safari.extension.settings.showBadge === true) {
+            menuItem.badge = count;
+          } else {
+            menuItem.badge = 0;
+          }
         }
       }
 
@@ -130,16 +141,13 @@
       function settingsChangeHandler(event) {
         if (event.key === "showBadge") {
           var menuItem = safari.extension.toolbarItems[0];
+          var feedCount = globalFeeds[currentTabUrl].length;
 
-          if (safari.extension.settings.showBadge === true) {
-            var feedCount = globalFeeds[currentTabUrl].length;
-
-            if (feedCount !== undefined) {
-              menuItem.badge = feedCount;
-            }
+          if (feedCount !== undefined) {
+            _updateMenuItemWithFeedCount(feedCount);
           } else {
-            menuItem.badge = 0;
-          }
+            _updateMenuItemWithFeedCount(0);
+          };
         } else if (event.key === "googleFeedEnabled") {
           if (safari.extension.settings.googleFeedEnabled === false) {
             feedTitles = {};
