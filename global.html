@@ -8,7 +8,6 @@
       safari.application.addEventListener("navigate", navigateHandler, true);
       safari.extension.settings.addEventListener("change", settingsChangeHandler, false);
 
-
       var globalFeeds = {};
       var feedTitles = {};
       var currentTabUrl;
@@ -19,7 +18,7 @@
           var feeds = event.message;
           globalFeeds[feeds["site"]] = feeds["list"];
 
-          if (_googleFeedEnabled()) {
+          if (_googleFeedEnabled() && !_privateBrowsingOn()) {
             fetchTitlesForFeeds(feeds["list"]);
           }
         }
@@ -148,6 +147,10 @@
 
       function _badgeEnabled() {
         return safari.extension.settings.showBadge;
+      }
+
+      function _privateBrowsingOn() {
+        return safari.application.privateBrowsing.enabled;
       }
 
       // Extension Helpers
