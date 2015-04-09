@@ -16,10 +16,11 @@
       function messageHandler(event) {
         if (event.name === "extractedFeeds") {
           var feeds = event.message;
-          globalFeeds[feeds["site"]] = feeds["list"];
+          var url = feeds["site"];
+          globalFeeds[url] = feeds["list"];
 
           if (_googleFeedEnabled() && !_privateBrowsingOn()) {
-            _fetchTitlesForFeeds(feeds["list"]);
+            _fetchTitlesForFeeds(globalFeeds[url]);
           }
         }
       }
