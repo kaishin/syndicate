@@ -5,7 +5,6 @@
     <script type="text/javascript">
       safari.application.addEventListener("message", messageHandler, false);
       safari.application.addEventListener("validate", validateHandler, false);
-      safari.application.addEventListener("navigate", navigateHandler, true);
       safari.extension.settings.addEventListener("change", settingsChangeHandler, false);
 
       var globalFeeds = {};
@@ -22,14 +21,6 @@
           if (_googleFeedEnabled() && !_privateBrowsingOn()) {
             _fetchTitlesForFeeds(globalFeeds[url]);
           }
-        }
-      }
-
-      function navigateHandler(event) {
-        var url = event.target.url;
-
-        if (event.type === "navigate") {
-          _updateItem(url);
         }
       }
 
