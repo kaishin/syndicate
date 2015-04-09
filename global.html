@@ -113,7 +113,7 @@
           var feed = feeds[i];
           var url = _sanitizeFeedUrl(feed["url"]);
 
-          if (feedTitles[url]) return;
+          if (feedTitles[url]) continue;
 
           var googleFeed = new google.feeds.Feed(url);
           googleFeed.setNumEntries(2);
