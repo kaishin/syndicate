@@ -26,18 +26,7 @@
       }
 
       function constructCell(feed) {
-        return "<li class=\"feed-cell\"><div class=\"feed-info\"><span class=\"feed-name\">" + feed["title"] + "</span><input class=\"url-field\" disabled=\"disabled\" alt=\"Click to select all\" type=\"text\" value=\"" + feed["url"] + "\"></div><div class=\"controls\"><form action=\"" + _feedProtocolUrl(feed["url"]) + "\"><input type=\"submit\" alt=\"Subscribe\" value=\"&#65291;\"></form></div></li>"
-      }
-
-      function _feedProtocolUrl(url) {
-        var trimmedUrl = url.trim();
-        var protocol = trimmedUrl.substr(0,4);
-
-        if (protocol !== "feed") {
-          return "feed://" + url;
-        } else {
-          return url;
-        }
+        return "<li class=\"feed-cell\"><div class=\"feed-info\"><span class=\"feed-name\">" + feed["title"] + "</span><input class=\"url-field\" disabled=\"disabled\" aria-label=\"Click to select feed URL\" type=\"text\" value=\"" + feed["url"] + "\"></div><div class=\"controls\"><form action=\"" + feed["url"] + "\"><input type=\"submit\" alt=\"Subscribe\" aria-label=\"Subscribe to " + feed["title"] + "\" value=\"&#65291;\"></form></div></li>"
       }
     </script>
     <link rel="stylesheet" href="assets/styles.css">
