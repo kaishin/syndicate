@@ -60,7 +60,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Displays RSS/Atom feeds available on the current Web page.</string>
+	<string>Brings the RSS button back to the toolbar</string>
 	<key>DeveloperIdentifier</key>
 	<string>U8WP333PAE</string>
 	<key>ExtensionInfoDictionaryVersion</key>
