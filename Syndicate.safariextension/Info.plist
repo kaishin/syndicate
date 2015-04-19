@@ -76,7 +76,7 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>https://redalemeden.com/syndicate/update.plist</string>
+	<string>https://raw.githubusercontent.com/kaishin/syndicate/master/updates.plist</string>
 	<key>Website</key>
 	<string>https://redalemeden.com/syndicate</string>
 </dict>
