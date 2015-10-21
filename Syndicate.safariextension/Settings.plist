@@ -4,21 +4,11 @@
 <array>
 	<dict>
 		<key>DefaultValue</key>
-		<false/>
-		<key>Key</key>
-		<string>showBadge</string>
-		<key>Title</key>
-		<string>Show feed count badge</string>
-		<key>Type</key>
-		<string>CheckBox</string>
-	</dict>
-	<dict>
-		<key>DefaultValue</key>
 		<true/>
 		<key>Key</key>
 		<string>googleFeedEnabled</string>
 		<key>Title</key>
-		<string>Display actual feed title (via Google Feed API)</string>
+		<string>Display feed titles using Google Feed API (Always disabled in Private Browsing)</string>
 		<key>Type</key>
 		<string>CheckBox</string>
 	</dict>

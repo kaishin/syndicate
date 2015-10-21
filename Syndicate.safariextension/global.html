@@ -33,24 +33,12 @@
       }
 
       function settingsChangeHandler(event) {
-        if (event.key === "showBadge") {
-          var menuItem = _activeMenuItem();
-          var feedCount = globalFeeds[currentTabUrl].length;
-
-          if (feedCount !== undefined) {
-            _updateMenuItemWithFeedCount(menuItem, feedCount);
-          } else {
-            _updateMenuItemWithFeedCount(menuItem, 0);
-          };
-        } else if (event.key === "googleFeedEnabled") {
-          if (!_googleFeedEnabled()) {
-            feedTitles = {};
-          }
+        if (event.key === "googleFeedEnabled") {
+          if (!_googleFeedEnabled()) { feedTitles = {}; }
         }
       }
 
       // Menu Item Helpers
-
       function _updateItem(url) {
         var menuItem = _activeMenuItem();
         currentTabUrl = url;
@@ -64,29 +52,16 @@
             _updateMenuItemWithFeedCount(menuItem, 0);
           }
         } else {
-            _updateMenuItemWithFeedCount(menuItem, 0);
+          _updateMenuItemWithFeedCount(menuItem, 0);
         }
       }
 
       function _updateMenuItemWithFeedCount(menuItem, count) {
         if (menuItem === null) { return };
-
-        if (count === 0) {
-          menuItem.disabled = true;
-          menuItem.badge = 0;
-        } else {
-          menuItem.disabled = false;
-
-          if (_badgeEnabled()) {
-            menuItem.badge = count;
-          } else {
-            menuItem.badge = 0;
-          }
-        }
+        menuItem.disabled = (count === 0);
       }
 
       // Public Helpers
-
       function currentTabFeeds() {
         var feeds = globalFeeds[currentTabUrl];
         var titledFeeds = [];
@@ -107,7 +82,6 @@
       }
 
       // Feed Helpers
-
       function _fetchTitlesForFeeds(feeds) {
         for (var i = 0; i < feeds.length; i++) {
           var feed = feeds[i];
@@ -138,13 +112,8 @@
       }
 
       // Settings Getters
-
       function _googleFeedEnabled() {
         return safari.extension.settings.googleFeedEnabled;
-      }
-
-      function _badgeEnabled() {
-        return safari.extension.settings.showBadge;
       }
 
       function _privateBrowsingOn() {
@@ -152,7 +121,6 @@
       }
 
       // Extension Helpers
-
       function _activeMenuItem() {
         const toolbarItems = safari.extension.toolbarItems;
         const activeBrowserWindow = safari.application.activeBrowserWindow;

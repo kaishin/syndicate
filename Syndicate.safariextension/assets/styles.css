@@ -3,7 +3,7 @@
 }
 
 body {
-  font-family: "Helvetica Neue";
+  font-family: -apple-system, "Helvetica Neue";
   overflow-x: hidden;
   padding-left: 5px;
   padding-right: 5px;
@@ -52,7 +52,7 @@ ul {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 220px;
+  width: 230px;
 }
 
 .url-field {
@@ -64,7 +64,7 @@ ul {
   margin: 2px 0 0;
   opacity: 0.7;
   padding: 0;
-  width: 220px;
+  width: 230px;
 }
 
 form {

@@ -4,6 +4,18 @@
 <dict>
    <key>Extension Updates</key>
    <array>
+    <dict>
+       <key>CFBundleIdentifier</key>
+       <string>co.kaishin.syndicate</string>
+       <key>Developer Identifier</key>
+       <string>5G38N4D8G2</string>
+       <key>CFBundleVersion</key>
+       <string>2</string>
+       <key>CFBundleShortVersionString</key>
+       <string>1.0.1</string>
+       <key>URL</key>
+       <string>https://github.com/kaishin/syndicate/releases/download/v1.0.1/Syndicate.safariextz</string>
+     </dict>
      <dict>
        <key>CFBundleIdentifier</key>
        <string>co.kaishin.syndicate</string>
