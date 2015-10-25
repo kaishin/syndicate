@@ -47,7 +47,7 @@ ul {
   -webkit-user-select: none;
   display: block;
   font-size: 14px;
-  font-weight: 200;
+  font-weight: normal;
   letter-spacing: 0.05em;
   overflow: hidden;
   text-overflow: ellipsis;
